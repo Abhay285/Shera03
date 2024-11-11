@@ -1,1 +1,11 @@
-gunicorn app:app & python3 main.py
+# Step 1: Build the Docker image
+docker build -t vj-post-search-bot .
+
+# Step 2: Run the Docker container
+docker run -d -p 8000:8000 --name vj-post-search-bot vj-post-search-bot
+
+# Step 3: Check logs of the running container
+docker logs -f vj-post-search-bot
+
+# Step 4: If you want to open a shell inside the container for debugging
+docker exec -it vj-post-search-bot /bin/bash
