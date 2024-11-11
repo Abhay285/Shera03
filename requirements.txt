@@ -1,13 +1,24 @@
-pyrofork
-tgcrypto
-motor[srv] 
-cinemagoer
-aiohttp
-aiofiles
-asyncio
-psutil
+# Core async libraries
+aiohttp==3.8.1
+aiofiles==23.1.0
+asyncio==3.4.3  # Ensure this is the correct version, as asyncio is built-in in Python 3.4+
+psutil==5.9.4
+
+# Telegram-related
+pyrofork==0.1.2
+tgcrypto==1.2.0
+
+# Database and storage
+motor[srv]==3.1.2  # Make sure the srv extra is what you need
+
+# Media and movie management
+cinemagoer==4.0.1
+
+# Web framework and server
 Flask==1.1.2
 gunicorn==20.1.0
+
+# Web templating and utility
 Jinja2==3.0.3
 werkzeug==2.0.2
 itsdangerous==2.0.1
