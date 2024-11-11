@@ -1,9 +1,21 @@
-# Don't Remove Credit Tg - @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
 from client import Bot
+import logging
 
-print("Bot Started 👍 Powered By @VJ_Botz")
-Bot().run()
+# Set up logging to handle output messages
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
+def main():
+    """
+    Entry point to run the bot.
+    Initializes and runs the Bot class.
+    """
+    try:
+        bot = Bot()
+        bot.run()  # This actually starts the bot by running it
+        logger.info("Bot started successfully 👍 Powered By @RMCBACKUP")
+    except Exception as e:
+        logger.error(f"Error while running the bot: {e}")
+
+if __name__ == "__main__":
+    main()
