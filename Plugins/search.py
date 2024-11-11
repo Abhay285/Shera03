@@ -1,8 +1,6 @@
 import asyncio
-from info import *
-from utils import *
-from time import time
-from plugins.generate import database
+from info import API_HASH, API_ID, ADMIN
+from utils import force_sub, get_group, search_imdb
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 
@@ -10,8 +8,8 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 async def send_message_in_chunks(client, chat_id, text):
     max_length = 4096  # Maximum length of a message
     for i in range(0, len(text), max_length):
-        msg = await client.send_message(chat_id=chat_id, text=text[i:i+max_length], disable_web_page_preview=True)
-        asyncio.create_task(delete_after_delay(msg, 1800))
+        msg = await client.send_message(chat_id=chat_id, text=text[i:i + max_length], disable_web_page_preview=True)
+        asyncio.create_task(delete_after_delay(msg, 1800))  # 30 minutes delay
 
 # Helper function to delete a message after a delay
 async def delete_after_delay(message: Message, delay):
@@ -37,7 +35,7 @@ async def search(bot, message):
 
     channels = (await get_group(message.chat.id))["channels"]
     if not channels:
-        return
+        return await message.reply("**No channels found for this group. Please contact the admin.**")
 
     if message.text.startswith("/"):
         return
@@ -58,9 +56,10 @@ async def search(bot, message):
         # If no results found, attempt to search via IMDB
         if not results:
             movies = await search_imdb(query)
-            buttons = []
-            for movie in movies:
-                buttons.append([InlineKeyboardButton(movie['title'], callback_data=f"recheck_{movie['id']}")])
+            buttons = [
+                [InlineKeyboardButton(movie['title'], callback_data=f"recheck_{movie['id']}")]
+                for movie in movies
+            ]
 
             msg = await message.reply_photo(
                 photo="https://graph.org/file/c361a803c7b70fc50d435.jpg",
@@ -154,4 +153,3 @@ async def request(bot, update):
     # Send feedback to the user and delete the message
     await update.answer("✅ Request Sent To Admin", show_alert=True)
     await update.message.delete(60)
-
